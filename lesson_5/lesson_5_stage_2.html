@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        :root {
+            —padding: 7px;
+        }
+
+        h3 {
+            padding-left: var(--padding);
+        }
+
+        .content {
+            display: flex;
+        }
+
+        .block {
+            width: 100px;
+            height: auto;
+            border-bottom: 1px solid #000;
+            align-items: center;
+            padding: var(--padding);
+        }
+
+        .block-name {
+            flex-grow: 2;
+        }
+
+        .block-name {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="goods-list"></div>
+    <script>
+        const basket = {
+            goods: [
+            {
+                product_name: "Ноутбук",
+                price: 45600,
+                quantity: 1
+            },
+            {
+                product_name: "Мышка",
+                price: 1000,
+                quantity: 3
+            },
+            {
+                product_name: "Монитор",
+                price: 15000,
+                quantity: 3
+            }
+            ],
+
+            initBasket() {
+                const goodsBlock = document.querySelector('.goods-list');
+                let tableGoodsHTML = `<div class="content">
+                <div class="block block-name"><b>Наименование товара</b></div>
+                <div class="block block-quantity"><b>Количество</b></div>
+                <div class="block"><b>Цена</b></div>
+                </div>
+                `;
+                this.goods.forEach((good) => {
+                    tableGoodsHTML += `<div class="content">
+                    <div class="block block-name">${good.product_name}</div>
+                    <div class="block block-quantity">${good.quantity}</div>
+                    <div class="block">${good.price}</div>
+                    </div>`
+                });
+                goodsBlock.innerHTML = tableGoodsHTML;
+
+                // Итоговое сообщение
+                const messageBasket = document.createElement('h3');
+                messageBasket.textContent = this.message();
+                goodsBlock.appendChild(messageBasket);
+            },
+
+            message() {
+                let msg = '';
+                if (this.countBasketQuantity() === 0) msg = "Корзина пуста";
+                else {
+                    msg = `В корзине: ${this.countBasketQuantity()} товаров на сумму ${this.countBasketPrice()} рублей`;
+                };
+                return msg;
+            },
+
+            countBasketPrice() {
+                return this.goods.reduce((totalPrice, cartItem) => totalPrice + cartItem.price * cartItem.quantity, 0);
+            },
+
+            countBasketQuantity() {
+                return this.goods.reduce((totalQuantity, cartItem) => totalQuantity + cartItem.quantity, 0);
+            }
+
+        };
+
+        basket.initBasket();
+    </script>
+
+</body>
+</html>
