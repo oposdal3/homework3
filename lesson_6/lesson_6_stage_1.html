@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        :root {
+            —padding: 7px;
+        }
+
+        h3 {
+            padding-left: var(--padding);
+        }
+
+        .content {
+            display: flex;
+        }
+
+        .block {
+            width: 100px;
+            height: auto;
+            border-bottom: 1px solid #000;
+            align-items: center;
+            padding: var(--padding);
+        }
+
+        .block-name {
+            flex-grow: 2;
+        }
+
+        .block-name {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="goods-list"></div>
+    <div class="catalog"></div>
+    <script>
+        const basket = {
+            goods: [],
+
+            initBasket() {
+                const goodsBlock = document.querySelector('.goods-list');
+                let tableGoodsHTML = `<div class="content">
+                <div class="block block-name"><b>Наименование товара</b></div>
+                <div class="block block-quantity"><b>Количество</b></div>
+                <div class="block"><b>Цена</b></div>
+                </div>
+                `;
+                this.goods.forEach((good) => {
+                    tableGoodsHTML += `<div class="content">
+                    <div class="block block-name">${good.product_name}</div>
+                    <div class="block block-quantity">${good.quantity}</div>
+                    <div class="block">${good.price}</div>
+                    </div>`
+                });
+                goodsBlock.innerHTML = tableGoodsHTML;
+
+                // Итоговое сообщение
+                const messageBasket = document.createElement('h3');
+                messageBasket.textContent = this.message();
+                goodsBlock.appendChild(messageBasket);
+            },
+
+            message() {
+                let msg = '';
+                if (this.countBasketQuantity() === 0) msg = "Корзина пуста";
+                else {
+                    msg = `В корзине: ${this.countBasketQuantity()} товаров на сумму ${this.countBasketPrice()} рублей`;
+                };
+                return msg;
+            },
+
+            countBasketPrice() {
+                return this.goods.reduce((totalPrice, cartItem) => totalPrice + cartItem.price * cartItem.quantity, 0);
+            },
+
+            countBasketQuantity() {
+                return this.goods.reduce((totalQuantity, cartItem) => totalQuantity + cartItem.quantity, 0);
+            }
+
+        };
+
+        const catalog = {
+            settings: {
+                catalogBlock: document.body.querySelector('.catalog')
+            },
+
+            products: [
+                {
+                    product_name: "Ноутбук",
+                    price: 45600,
+                    idProduct: '1',
+                    quantity: 1
+                },
+                {
+                    product_name: "Мышка",
+                    price: 1000,
+                    idProduct: '2',
+                    quantity: 1
+                },
+                {
+                    product_name: "Монитор",
+                    price: 15000,
+                    idProduct: '3',
+                    quantity: 1
+                },
+                {
+                    product_name: "Клавиатура",
+                    price: 3400,
+                    idProduct: '4',
+                    quantity: 1
+                },
+                {
+                    product_name: "Наушники",
+                    price: 3450,
+                    idProduct: '5',
+                    quantity: 1
+                }
+            ],
+
+            initCatalog() {
+                let tableCatalogHTML = `<h1>Каталог товаров</h1>
+                <div class="content">
+                <div class="block block-name"><b>Наименование товара</b></div>
+                <div class="block block-quantity"><b>Код товара</b></div>
+                <div class="block"><b>Цена</b></div>
+                <div class="block"></div>
+                </div>
+                `;
+                this.products.forEach((product) => {
+                tableCatalogHTML += `<div class="content card">
+                <div class="block block-name">${product.product_name}</div>
+                <div class="block block-quantity">${product.idProduct}</div>
+                <div class="block">${product.price}</div>
+                <div class="block"><button class="cart-btn" data-product_id="${product.idProduct}">В корзину</button></div>
+                </div>`
+                });
+                this.settings.catalogBlock.innerHTML = tableCatalogHTML;
+            },
+
+            clickBtn() {
+                this.settings.catalogBlock.addEventListener('click', event => {
+                if (!event.target.matches('BUTTON')) return
+                const id = event.target.dataset.product_id
+                this.searchForDuplicates(id);
+                })
+            },
+
+            searchForDuplicates(id) {
+                const indexProductBasket = basket.goods.findIndex(product => product.idProduct === id);
+                if (indexProductBasket !== -1) {
+                    basket.goods[indexProductBasket].quantity += 1;
+                    basket.initBasket();
+                } else {
+                    this.productSearchByID(id)
+                }
+            },
+
+            productSearchByID(id) {
+                const indexProduct = this.products.findIndex(product => product.idProduct === id);
+                this.newProductForBasket(indexProduct)
+            },
+
+            newProductForBasket(index) {
+                let newProduct = JSON.parse(JSON.stringify(this.products[index]));
+                basket.goods.push(newProduct);
+                basket.initBasket();
+            },
+
+            init() {
+                this.clickBtn();
+                this.initCatalog();
+            }
+        }
+
+        catalog.init();
+        basket.initBasket();
+
+    </script>
+
+</body>
+</html>
