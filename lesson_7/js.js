@@ -386,8 +386,7 @@ const game = {
         const rockCoordinates = this.rock.getCoordinates();
 
         return !this.snake.isOnPoint(nextHeadPoint) &&
-            !(nextHeadPoint.x == rockCoordinates.x &&
-                nextHeadPoint.y == rockCoordinates.y)
+            !(this.rock.isOnPoint(nextHeadPoint))
     },
 
     playClickHandler() {
