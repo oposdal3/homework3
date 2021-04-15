@@ -34,9 +34,34 @@ td.cell{
     border: 1px dotted #eee;
     border-collapse: collapse;
 }
-.food{
-    background: rgba(233, 45, 12, 0.884);
-    border-radius: 10px;
+.food {
+    background: #f7ca04;
+    animation-name: blinker;
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(1.0, 2.0, 0, 1.0);
+    animation-duration: 1s;
+    -webkit-animation-name: blinker;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: cubic-bezier(1.0, 2.0, 0, 1.0);
+    -webkit-animation-duration: 0.4s;
+}
+
+@keyframes blinker {
+    from {
+        opacity: 1.0;
+    }
+    to {
+        opacity: 0.5;
+    }
+}
+
+@-webkit-keyframes blinker {
+    from {
+        opacity: 1.0;
+    }
+    to {
+        opacity: 0.5;
+    }
 }
 .rock{
     background: #b3afaf;
