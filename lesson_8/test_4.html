@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        function b(x, y, a) { // переменные в функцию передаются как массив данных и эти данные можно менять так что 10
+            arguments[2] = 10;
+            alert(a);
+        }
+        b(1, 2, 3); // правильно
+    </script>
+</body>
+</html>
